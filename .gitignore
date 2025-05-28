@@ -1,49 +1,67 @@
-# Python
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.so
-*.egg-info/
-dist/
-build/
-*.log
 
-# Env files
+# Logs and local SQLite DBs
+*.log
+*.sqlite3
+*.db
+
+# Environments
 .env
 .env.*
+venv/
+.venv/
 
-# VSCode
+# VS Code settings
 .vscode/
 
-# Pytest
-.cache/
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Testing
 .pytest_cache/
+.cache/
+.coverage
+htmlcov/
 
 # Alembic
 alembic/versions/*.pyc
+alembic/versions/__pycache__/
 
-# mypy/migrations
+# Mypy and other tools
 .mypy_cache/
-migrations/
+.dmypy.json
+.pyre/
+.pytype/
 
 # Docker
-*.db
 *.pid
-*.sqlite3
-*.bak
 *.tar
 *.gz
+*.bak
+*.swp
+docker-compose.override.yml
 
-# OS
-.DS_Store
-Thumbs.db
+# Node (если вдруг frontend рядом)
+node_modules/
+dist/
+build/
 
-# Virtual env
-venv/
-.env/
-.envrc
+# Idea/JetBrains
+.idea/
 
-# PostgreSQL dumps
+# Jupyter (если экспериментируешь)
+.ipynb_checkpoints/
+
+# Ignore personal SQL dumps
 *.sql
 *.dump
