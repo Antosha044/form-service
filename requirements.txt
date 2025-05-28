@@ -2,7 +2,10 @@ fastapi
 uvicorn[standard]
 python-dotenv
 pydantic
-sqlalchemy
+pydantic-settings
+email_validator
+sqlalchemy>=2.0
+asyncpg
 psycopg2-binary
 alembic
 passlib[bcrypt]
