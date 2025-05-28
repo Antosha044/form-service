@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+dist/
+build/
+*.log
+
+# Env files
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# Pytest
+.cache/
+.pytest_cache/
+
+# Alembic
+alembic/versions/*.pyc
+
+# mypy/migrations
+.mypy_cache/
+migrations/
+
+# Docker
+*.db
+*.pid
+*.sqlite3
+*.bak
+*.tar
+*.gz
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Virtual env
+venv/
+.env/
+.envrc
+
+# PostgreSQL dumps
+*.sql
+*.dump
