@@ -48,7 +48,7 @@ class Question(Base):
     form_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     question_type: Mapped[Question_type] = mapped_column(SQLEnum(Question_type, name="question_type_enum"), nullable=False)
-    order: Mapped[int] = mapped_column(nullable=False, default=1)
+    order: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
 
     form: Mapped["Form"] = relationship(back_populates="questions")
     answers: Mapped[list["Answer"]] = relationship(back_populates = "question")
@@ -59,7 +59,7 @@ class Attempt(Base):
 
     id: Mapped[uuidpk]
     form_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
-    respondent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
     submitted_at: Mapped[created_at]
 
     form: Mapped["Form"] = relationship(back_populates = "attempts")
@@ -73,12 +73,11 @@ class Answer(Base):
     id: Mapped[uuidpk]
     attempt_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("attempts.id"), ondelete="CASCADE", nullable=False)
     question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id"), ondelete="CASCADE", nullable=False)
-    text: Mapped[uuid.UUID] = mapped_column(Text, nullable=True)
-    selected_choice: Mapped[uuid.UUID] = mapped_column(ForeignKey("choices.id"), ondelete="CASCADE")
+    text: Mapped[str] = mapped_column(Text, nullable=True)
 
     question: Mapped["Question"] = relationship(back_populates = "answers")
     attempt: Mapped["Attempt"] = relationship(back_populates = "answers")
-    choice: Mapped["Choice"] = relationship(back_populates = "answer")
+    choices: Mapped[list["Choice"]] = relationship("Choice",secondary="answers_choices",back_populates = "answers")
 
 class Choice(Base):
     __tablename__ = "choices"
@@ -88,8 +87,11 @@ class Choice(Base):
     text: Mapped[str] = mapped_column(Text, nullable=False)
     
     question: Mapped["Question"] = relationship(back_populates = "choices")
-    answer: Mapped["Answer"] = relationship(back_populates = "choice")
+    answers: Mapped[list["Answer"]] = relationship("Answer",secondary="answers_choices",back_populates = "choices")
 
-
-
-
+answers_choices = Table(
+    "answers_choices",
+    Base.metadata,
+    Column("answer_id",UUID(as_uuid=True), ForeignKey("answers.id"), primary_key=True),
+    Column("choice_id",UUID(as_uuid=True), ForeignKey("choices.id"), primary_key=True)
+)
