@@ -11,9 +11,6 @@ class Settings(BaseSettings):
     postgres_host: str  
     postgres_port: int
 
-    DATABASE_URL_asyncpg: str
-    DATABASE_URL_psycopg: str
-
     secret_key: str
     algorithm: str
     access_token_expire_minutes: int
