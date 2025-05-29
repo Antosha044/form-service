@@ -51,6 +51,8 @@ class Question(Base):
     order: Mapped[int] = mapped_column(nullable=False, default=1)
 
     form: Mapped["Form"] = relationship(back_populates="questions")
+    answers: Mapped[list["Answer"]] = relationship(back_populates = "question")
+    choices: Mapped[list["Choice"]] = relationship(back_populates = "question")
 
 class Attempt(Base):
     __tablename__ = "attempts"
@@ -62,12 +64,31 @@ class Attempt(Base):
 
     form: Mapped["Form"] = relationship(back_populates = "attempts")
     user: Mapped["User"] = relationship(back_populates = "attempts")
+    answers: Mapped[list["Answer"]] = relationship(back_populates = "attempt")
 
 
 class Answer(Base):
     __tablename__ = "answers"
 
     id: Mapped[uuidpk]
+    attempt_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("attempts.id"), ondelete="CASCADE", nullable=False)
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id"), ondelete="CASCADE", nullable=False)
+    text: Mapped[uuid.UUID] = mapped_column(Text, nullable=True)
+    selected_choice: Mapped[uuid.UUID] = mapped_column(ForeignKey("choices.id"), ondelete="CASCADE")
+
+    question: Mapped["Question"] = relationship(back_populates = "answers")
+    attempt: Mapped["Attempt"] = relationship(back_populates = "answers")
+    choice: Mapped["Choice"] = relationship(back_populates = "answer")
+
+class Choice(Base):
+    __tablename__ = "choices"
+
+    id: Mapped[uuidpk]
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id"), ondelete="CASCADE", nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    
+    question: Mapped["Question"] = relationship(back_populates = "choices")
+    answer: Mapped["Answer"] = relationship(back_populates = "choice")
 
 
 
