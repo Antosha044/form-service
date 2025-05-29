@@ -23,6 +23,7 @@ class User(Base):
     password: Mapped[str] = mapped_column(nullable=False)
 
     forms: Mapped[list["Form"]] = relationship(back_populates = "owner")
+    attempts: Mapped[list["Attempt"]] = relationship(back_populates = "user")
 
 class Form(Base):
     __tablename__ = "forms"
@@ -37,7 +38,8 @@ class Form(Base):
     status: Mapped[Status] = mapped_column(SQLEnum(Status, name="status_enum"), nullable=False)
 
     owner: Mapped["User"] = relationship(back_populates = "forms")
-    questions: Mapped[list["Question"]] = relationship(back_populates = "form")
+    questions: Mapped[list["Question"]] = relationship(back_populates = "form", cascade="all, delete-orphan")
+    attempts: Mapped[list["Attempt"]] = relationship(back_populates = "form")
 
 class Question(Base):
     __tablename__ = "questions"
@@ -49,4 +51,24 @@ class Question(Base):
     order: Mapped[int] = mapped_column(nullable=False, default=1)
 
     form: Mapped["Form"] = relationship(back_populates="questions")
+
+class Attempt(Base):
+    __tablename__ = "attempts"
+
+    id: Mapped[uuidpk]
+    form_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
+    respondent_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id"), nullable=False)
+    submitted_at: Mapped[created_at]
+
+    form: Mapped["Form"] = relationship(back_populates = "attempts")
+    user: Mapped["User"] = relationship(back_populates = "attempts")
+
+
+class Answer(Base):
+    __tablename__ = "answers"
+
+    id: Mapped[uuidpk]
+
+
+
 
