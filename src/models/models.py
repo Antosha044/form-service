@@ -48,7 +48,7 @@ class Question(Base):
     form_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("forms.id", ondelete="CASCADE"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     question_type: Mapped[Question_type] = mapped_column(SQLEnum(Question_type, name="question_type_enum"), nullable=False)
-    order: Mapped[int] = mapped_column(nullable=False, server_default=text("1"))
+    order: Mapped[int] = mapped_column(nullable=False, server_default="1")
 
     form: Mapped["Form"] = relationship(back_populates="questions")
     answers: Mapped[list["Answer"]] = relationship(back_populates = "question")
@@ -71,8 +71,8 @@ class Answer(Base):
     __tablename__ = "answers"
 
     id: Mapped[uuidpk]
-    attempt_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("attempts.id"), ondelete="CASCADE", nullable=False)
-    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id"), ondelete="CASCADE", nullable=False)
+    attempt_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("attempts.id", ondelete="CASCADE"), nullable=False)
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=True)
 
     question: Mapped["Question"] = relationship(back_populates = "answers")
@@ -83,7 +83,7 @@ class Choice(Base):
     __tablename__ = "choices"
 
     id: Mapped[uuidpk]
-    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id"), ondelete="CASCADE", nullable=False)
+    question_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("questions.id", ondelete="CASCADE"), nullable=False)
     text: Mapped[str] = mapped_column(Text, nullable=False)
     
     question: Mapped["Question"] = relationship(back_populates = "choices")
