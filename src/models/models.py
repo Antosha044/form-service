@@ -21,6 +21,7 @@ class User(Base):
     id: Mapped[uuidpk]
     email: Mapped[str] = mapped_column(String(100), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
+    username: Mapped[str] = mapped_column(String(50), unique=True, nullable=False)
 
     forms: Mapped[list["Form"]] = relationship(back_populates = "owner")
     attempts: Mapped[list["Attempt"]] = relationship(back_populates = "user")
