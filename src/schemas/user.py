@@ -5,9 +5,6 @@ class UserBase(BaseModel):
     username: str
     email: EmailStr
 
-class UserCreate(UserBase):
-    password: constr(min_length=6)
-
 class UserUpdate(BaseModel):
     username: str | None = None
     password: str | None = None

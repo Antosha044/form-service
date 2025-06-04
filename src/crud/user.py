@@ -4,7 +4,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, delete
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from src.models.models import User
-from src.schemas.user import UserCreate, UserUpdate
+from src.schemas.user import UserUpdate
+from src.schemas.auth import UserRegister
 from uuid import UUID
 from sqlalchemy.exc import NoResultFound
 
@@ -13,7 +14,7 @@ def hash_password(password: str) -> str:
     pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
     return pwd_context.hash(password)
 
-async def create_user(session: AsyncSession, user_data: UserCreate) -> User:
+async def create_user(session: AsyncSession, user_data: UserRegister) -> User:
     new_user = User(
         id = uuid4(),
         username = user_data.username,
