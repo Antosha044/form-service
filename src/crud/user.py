@@ -7,11 +7,7 @@ from src.models.models import User
 from src.schemas.user import UserUpdate
 from src.schemas.auth import UserRegister
 from sqlalchemy.exc import NoResultFound
-
-def hash_password(password: str) -> str:
-    from passlib.context import CryptContext
-    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-    return pwd_context.hash(password)
+from src.crud.security import hash_password
 
 async def create_user(session: AsyncSession, user_data: UserRegister) -> User:
     new_user = User(
@@ -38,7 +34,7 @@ async def get_user_by_id(user_id: UUID, session: AsyncSession) -> User | None:
 
 async def get_user_by_email(email: str, session: AsyncSession) -> User | None:
     result = await session.execute(select(User).where(User.email==email))
-    return result.scalar_one_or_none
+    return result.scalar_one_or_none()
 
 async def get_all_users(session: AsyncSession) -> list[User]:
     result = await session.execute(select(User))
