@@ -26,3 +26,4 @@ async def get_user_by_id(user_id: UUID, session: AsyncSession = Depends(get_db),
 async def get_all_users(session: AsyncSession = Depends(get_db), current_user: User = Depends(get_current_user)):
     return await user_crud.get_all_users(session)
 
+#@router.post("/{user_id}", response_model=UserOut)
