@@ -1,4 +1,4 @@
-from uuid import uuid4
+from uuid import uuid4, UUID
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select, update, delete
@@ -6,7 +6,6 @@ from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from src.models.models import User
 from src.schemas.user import UserUpdate
 from src.schemas.auth import UserRegister
-from uuid import UUID
 from sqlalchemy.exc import NoResultFound
 
 def hash_password(password: str) -> str:
@@ -32,3 +31,16 @@ async def create_user(session: AsyncSession, user_data: UserRegister) -> User:
     except SQLAlchemyError:
         await session.rollback()
         raise HTTPException(status_code=500, detail="Internal server error")
+    
+async def get_user_by_id(user_id: UUID, session: AsyncSession) -> User | None:
+    result = await session.execute(select(User).where(User.id==user_id))
+    return result.scalar_one_or_none()
+
+async def get_user_by_email(email: str, session: AsyncSession) -> User | None:
+    result = await session.execute(select(User).where(User.email==email))
+    return result.scalar_one_or_none
+
+async def get_all_users(session: AsyncSession) -> list[User]:
+    result = await session.execute(select(User))
+    return result.scalars().all()
+
