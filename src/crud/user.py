@@ -60,6 +60,14 @@ async def update_user(user_id: UUID, user_data: UserUpdate, session: AsyncSessio
         return user
 
 
-             
+async def delete_user(user_id: UUID, session: AsyncSession) -> bool | None:
+     user = await get_user_by_id(user_id, session)
+     if not user:
+          return None
+     
+     await session.delete(user)
+     await session.commit()
+
+     return True
 
 
