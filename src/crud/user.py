@@ -1,12 +1,11 @@
 from uuid import uuid4, UUID
 from fastapi import HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy import select, update, delete
+from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError, IntegrityError
 from src.models.models import User
 from src.schemas.user import UserUpdate
 from src.schemas.auth import UserRegister
-from sqlalchemy.exc import NoResultFound
 from src.core.security import hash_password
 
 async def create_user(session: AsyncSession, user_data: UserRegister) -> User:

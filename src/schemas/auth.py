@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, constr, Field
+from pydantic import BaseModel, EmailStr, constr
 
 class UserRegister(BaseModel):
     email: EmailStr
