@@ -66,7 +66,6 @@ async def delete_user(user_id: UUID, session: AsyncSession) -> bool | None:
      
      await session.delete(user)
      await session.commit()
-
      return True
 
 
