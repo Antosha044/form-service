@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from sqlalchemy.orm import selectinload
 from sqlalchemy.exc import SQLAlchemyError
-from src.models.models import Form
+from src.models.models import Form, Question
 from src.schemas.form import FormCreate, FormUpdate, FormOut
 from src.schemas.auth import UserRegister
 
@@ -28,7 +28,7 @@ async def create_form(form_data: FormCreate, owner_id: UUID, session: AsyncSessi
 
 async def get_form_by_id(form_id: UUID, session: AsyncSession) -> Form | None:
     result = await session.execute(select(Form).options(
-        selectinload(Form.questions),
+        selectinload(Form.questions).selectinload(Question.choices),
         selectinload(Form.attempts)
     ).where(Form.id==form_id))
     form = result.scalar_one_or_none()
