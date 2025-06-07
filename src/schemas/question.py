@@ -24,7 +24,7 @@ class QuestionUpdate(BaseModel):
 class QuestionOut(QuestionBase):
     id: UUID
     form_id: UUID
-    choices: List[ChoiceOut] = []
+    choices: List[ChoiceOut] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
