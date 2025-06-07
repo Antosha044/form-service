@@ -19,3 +19,22 @@ async def create_form(
 ):
     form = await form_crud.create_form(form_data, current_user.id, session)
     return form
+
+@router.get("/me", response_model=list[FormOut])
+async def get_forms_by_current_user(
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    forms = await form_crud.get_forms_by_user(current_user.id, session)
+    return forms
+
+@router.get("/{form_id}", response_model=FormOut)
+async def get_form_by_id(
+    form_id: UUID,
+    session: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_db)
+):
+    form = await form_crud.get_form_by_id(form_id, session)
+    if not form:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Form not found")
+    return form
