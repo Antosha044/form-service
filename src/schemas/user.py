@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, constr
+from pydantic import BaseModel, EmailStr
 from uuid import UUID
 
 class UserBase(BaseModel):
