@@ -1,7 +1,9 @@
 from pydantic import BaseModel, constr
 from uuid import UUID
+from typing import List
 from datetime import datetime
 from src.models.enums import Status 
+from src.schemas.question import QuestionOut
 
 class FormBase(BaseModel):
     title: constr(min_length=1, max_length=50)
@@ -26,6 +28,7 @@ class FormOut(FormBase):
     owner_id: UUID
     created_at: datetime
     updated_at: datetime
+    questions: List[QuestionOut]
     
     class Config:
         from_attributes = True
